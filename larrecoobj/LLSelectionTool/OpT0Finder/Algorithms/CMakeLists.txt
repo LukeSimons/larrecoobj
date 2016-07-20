@@ -19,6 +19,7 @@ cet_make( LIBRARIES canvas_Persistency_Common
                     ${ART_PERSISTENCY_COMMON}
                     ${ART_PERSISTENCY_PROVENANCE}
                     ${ART_UTILITIES}
+                    ${CANVAS_UTILITIES}
 		    ${ROOT_BASIC_LIB_LIST}
 		    ${FHICLCPP}
                     ${CETLIB}

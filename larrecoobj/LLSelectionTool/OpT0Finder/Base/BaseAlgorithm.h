@@ -19,7 +19,7 @@
 //#include "GeoAlgo/GeoAABox.h"
 //#include "FhiclLite/PSet.h"
 #include <vector>
-#include "larrecoobj/LLBasicTool/GeoAlgo/GeoAABox.h"
+#include "larcoreobj/GeoAlgo/GeoAABox.h"
 #include "fhiclcpp/ParameterSet.h"
 
 namespace flashana {

@@ -146,7 +146,11 @@ void UBFlashMatching::produce(art::Event & e)
     for(size_t pmt_index=0; pmt_index<num_pmts; ++pmt_index)
       
       flash.pe_v[pmt_index] = opf.PE(pmt_index);
-    
+   
+    for(size_t pmt_index=0; pmt_index<num_pmts; ++pmt_index){
+
+    }
+ 
     flash.idx   = opflash_index;
     flash.time  = opf.Time();
     flash.x     = 128.;
