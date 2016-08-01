@@ -20,8 +20,8 @@ endif
 #
 # Define directories to be compile upon a global "make"...
 #
-SUBDIRS := LLSelectionTool #ADD_NEW_SUBDIR ... do not remove this comment from this line
-
+SUBDIRS := OpT0Finder #ADD_NEW_SUBDIR ... do not remove this comment from this line
+#LLSelectionTool
 #####################################################################################
 #
 # COMPILATION...
