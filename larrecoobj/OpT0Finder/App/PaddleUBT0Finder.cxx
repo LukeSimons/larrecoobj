@@ -84,7 +84,8 @@ namespace larlite {
     auto ev_hit= storage->get_data<event_ophit>("satOpFlash");// opflash");
     
     auto ev_track = storage->get_data<event_track>("trackkalmanhit");
-    auto ev_mctrack = storage->get_data<event_mctrack>("mcreco");
+    //auto ev_mctrack = storage->get_data<event_mctrack>("mcreco");
+    auto ev_mctrack = storage->get_data<larlite::wrapper<std::vector<sim::MCTrack> > >("mcreco");
     
     
     if(!ev_flash || ev_flash->empty()) {

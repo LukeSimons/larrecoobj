@@ -4,12 +4,11 @@
 #include "MCQCluster.h"
 
 //#include "LArUtil/LArProperties.h"
-#include "lardata/DetectorInfo/DetectorPropertiesStandard.h"
+//#include "lardata/DetectorInfo/DetectorPropertiesStandard.h"
 
-#include "DataFormat/mctrack.h"
-
+//#include "DataFormat/mctrack.h"
 //#include "DataFormat/mcshower.h"
-#include "lardataobj/MCBase/MCShower.h"
+//#include "lardataobj/MCBase/MCShower.h"
 
 #include "OpT0Finder/Base/OpT0FinderTypes.h"
 #include "GeoAlgo/GeoVector.h"
@@ -34,18 +33,21 @@ namespace flashana {
   { return _qcluster_v; }
 
   MCSource_t MCQCluster::Identify( const unsigned int ancestor_track_id,
-                                   const ::larlite::event_mctrack& ev_mct,
+                                   const ::larlite::wrapper<std::vector<sim::MCTrack> >& ev_mct, 
                                    const ::larlite::wrapper<std::vector<sim::MCShower> >& ev_mcs) const
   {
     MCSource_t res;
 
-    for (size_t mct_index = 0; mct_index < ev_mct.size(); ++mct_index) {
+    auto temp_mct = ev_mct.product();
 
-      auto const& mct = ev_mct[mct_index];
+    for (size_t mct_index = 0; mct_index < temp_mct->size(); ++mct_index) {
 
-      if (mct.TrackID() == ancestor_track_id) {
+      auto const & mct = temp_mct[mct_index]; 
+//    auto const& mct = ev_mct[mct_index];
+
+      if (mct[mct_index].TrackID() == ancestor_track_id) {
         res.index_id = (int)mct_index;
-        res.g4_time  = mct.Start().T();
+        res.g4_time  = mct[mct_index].Start().T();
 
         //std::cout<<"1) g4 time is: "<<res.g4_time / 1000<<" size : "<<mct.size()<<std::endl ;
         res.source_type = kMCTrackAncestor;
@@ -54,10 +56,11 @@ namespace flashana {
 
     }
 
-    for (size_t mcs_index = 0; mcs_index < ev_mcs->size(); ++mcs_index) {
+    auto const temp_mcs = ev_mcs.product();
 
-      auto const temp = ev_mcs.product();
-      auto const& mcs = temp[mcs_index];
+    for (size_t mcs_index = 0; mcs_index < temp_mcs->size(); ++mcs_index) {
+
+      auto const& mcs = temp_mcs[mcs_index];
       // auto const & mcs = ev_mcs[mcs_index];
 
       if (mcs[mcs_index].TrackID() == ancestor_track_id) {
@@ -73,7 +76,7 @@ namespace flashana {
     return res;
   }
 
-  void MCQCluster::Construct( const ::larlite::event_mctrack& ev_mct,
+  void MCQCluster::Construct( const ::larlite::wrapper<std::vector<sim::MCTrack> >& ev_mct,
                               const ::larlite::wrapper<std::vector<sim::MCShower> >& ev_mcs )
   {
 
@@ -101,24 +104,29 @@ namespace flashana {
 
     //
     // 1) Loop over mctrack
-    //
     // Reserve vector size for MCTrack
-    _mctrack_2_qcluster.reserve(ev_mct.size());
-    _qcluster_v.reserve(ev_mct.size());
-    for (size_t mct_index = 0; mct_index < ev_mct.size(); mct_index++) {
+    _mctrack_2_qcluster.reserve(ev_mct->size());
+    _qcluster_v.reserve(ev_mct->size());
+
+    auto temp_mct = ev_mct.product() ;
+
+    for (size_t mct_index = 0; mct_index < temp_mct->size(); mct_index++) {
       //  std::cout<<"Ancestors: "<<ev_mct.at(mct_index).AncestorTrackID()<<std::endl;
 
-      auto const& trk = ev_mct[mct_index];
-      if (trk.size() <= 2 || trk[0].T() < -2050000 || trk[0].T() > 2750000 ) continue;
+      auto const & trk = temp_mct[mct_index]; 
 
-      auto usedIDs_iter = usedIDs.find(trk.AncestorTrackID());
+      /// NOTE : I'm not sure why this indexing works. Why is trk still vector<sim::MCTrack>?
+      /// May need to revisit when have files available --ahack 080316
+      if (trk.size() <= 2 || trk[mct_index].at(0).T() < -2050000 || trk[mct_index].at(0).T() > 2750000 ) continue;
+
+      auto usedIDs_iter = usedIDs.find(trk[mct_index].AncestorTrackID());
 
       size_t qcluster_index = 0;
       if ( usedIDs_iter == usedIDs.end() ) {
         qcluster_index = _qcluster_v.size();
-        usedIDs.emplace(trk.AncestorTrackID(), qcluster_index);
+        usedIDs.emplace(trk[mct_index].AncestorTrackID(), qcluster_index);
         // Search ancestor identity
-        _qcluster_2_mcobject.emplace_back(Identify(trk.AncestorTrackID(), ev_mct, ev_mcs));
+        _qcluster_2_mcobject.emplace_back(Identify(trk[mct_index].AncestorTrackID(), ev_mct, ev_mcs));
         QCluster_t qcluster;
         qcluster.idx = _qcluster_2_mcobject.back().index_id;
         _qcluster_v.emplace_back(qcluster);
@@ -134,7 +142,7 @@ namespace flashana {
       auto& tpc_obj = _qcluster_v[qcluster_index];
       auto& tpc_src = _qcluster_2_mcobject[qcluster_index];
 
-      if (trk.size() <= 2) continue;
+      if (trk[mct_index].size() <= 2) continue;
 
       // per track calculate the shift in x-direction
       // so that the x-position is what would be seen
@@ -143,9 +151,9 @@ namespace flashana {
 //      double det_drift_velocity = ::larutil::LArProperties::GetME()->DriftVelocity(); ///< cm/us
 //      double det_drift_velocity = detinfo::DetectorPropertiesStandard().DriftVelocity();
       double det_drift_velocity = 0.111436; // TEMPORARY HACK
-      double event_time = trk[0].T(); // ns
+      double event_time = trk[mct_index][0].T(); // ns
       double shift_x = event_time * det_drift_velocity * pow(10, -3); //cm
-      tpc_obj.reserve(tpc_obj.size() + trk.size());
+      tpc_obj.reserve(tpc_obj.size() + trk[mct_index].size());
 
 
       if (_use_light_path) {
@@ -153,9 +161,9 @@ namespace flashana {
         //_lightpath_clustering.SetXOffset(shift_x);
 
         ::geoalgo::Trajectory mctraj;
-        for (size_t i = 0; i < trk.size(); ++i)
+        for (size_t i = 0; i < trk[mct_index].size(); ++i)
 	  //Instead of adding x shift in LightPath, now add x shift line below
-	  mctraj.push_back(::geoalgo::Vector(trk.at(i).X()+shift_x, trk.at(i).Y(), trk.at(i).Z()));
+	  mctraj.push_back(::geoalgo::Vector(trk[mct_index].at(i).X()+shift_x, trk[mct_index].at(i).Y(), trk[mct_index].at(i).Z()));
 
         auto qclus = _lightpath_clustering.FlashHypothesis(mctraj);
 
@@ -170,10 +178,10 @@ namespace flashana {
         // them as one interaction
         ::geoalgo::Point_t step_dir(0, 0, 0);
 
-        for (size_t step_index = 0; (step_index + 1) < trk.size(); ++step_index) {
+        for (size_t step_index = 0; (step_index + 1) < trk[mct_index].size(); ++step_index) {
 
-          auto const& pt1 = trk[step_index];
-          auto const& pt2 = trk[step_index + 1];
+          auto const& pt1 = trk[mct_index][step_index];
+          auto const& pt2 = trk[mct_index][step_index + 1];
 
           double dx = pt2.X() - pt1.X();
           double dy = pt2.Y() - pt1.Y();

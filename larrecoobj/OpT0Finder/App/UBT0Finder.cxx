@@ -6,7 +6,7 @@
 #include "DataFormat/opflash.h"
 #include "DataFormat/ophit.h"
 #include "DataFormat/calorimetry.h"
-#include "DataFormat/mctrack.h"
+//#include "DataFormat/mctrack.h"
 #include "GeoAlgo/GeoAlgo.h"
 #include "GeoAlgo/GeoLineSegment.h"
 #include "LArUtil/Geometry.h"
@@ -134,9 +134,9 @@ namespace larlite {
 
     //auto ev_track = storage->get_data<event_track>("pandoraCosmicKHit");
     auto ev_track = storage->get_data<event_track>("trackkalmanhit");
-    auto ev_mctrack = storage->get_data<event_mctrack>("mcreco");
+    //auto ev_mctrack = storage->get_data<event_mctrack>("mcreco");
+    auto ev_mctrack = storage->get_data<larlite::wrapper<std::vector<sim::MCTrack> > >("mcreco");
     auto ev_mcshower = storage->get_data<larlite::wrapper<std::vector<sim::MCShower> > >("mcreco");
-
 
     if (!_use_mc) {
       if (!ev_track || ev_track->empty()) return false;
@@ -174,12 +174,13 @@ namespace larlite {
     // use MC tracks
     else {
 
-      if (!ev_mctrack || ev_mctrack->empty()) return false;
-
-
-      for (size_t n = 0; n < ev_mctrack->size(); n++) {
-
-        auto const& trk = ev_mctrack->at(n);
+      //if (!ev_mctrack || ev_mctrack.empty()) return false;
+      if (!ev_mctrack) return false;
+      auto temp_mctrack = ev_mctrack->product();
+      if( temp_mctrack->empty() ) return false ;
+      
+      for (size_t n = 0; n < temp_mctrack->size(); n++) {
+        auto const& trk = temp_mctrack->at(n);
 
         if (trk.size() > 2) {
 
@@ -306,9 +307,11 @@ namespace larlite {
       if (_use_mc) {
 
 //  std::cout<<"Match things...: "<<match.tpc_id<<", and size of ev_mctrk : "<<ev_mctrack->size()<<std::endl ;
+  
 
-        auto const& mct = (*ev_mctrack)[match.tpc_id];
-	if( !mct.size() ) continue;
+        auto temp_mctrack = ev_mctrack->product();
+        auto const& mct = (*temp_mctrack)[match.tpc_id];
+	    if( !mct.size() ) continue;
 
         _mc_time = mct[0].T() * 1.e-3;
 
@@ -361,8 +364,11 @@ namespace larlite {
       return true;
 
     _npts = 0 ;
-    for (size_t n = 0; n < ev_mctrack->size(); n++) {
-      auto const& mct = ev_mctrack->at(n);
+
+   auto temp_mctrack = ev_mctrack->product();
+   for (size_t n = 0; n < temp_mctrack->size(); n++) {
+      auto const& mct = temp_mctrack->at(n);
+      //auto const& mct = ev_mctrack->at(n);
       // ignore tracks with < 2 steps
       if (mct.size() <= 2) continue;
       // find the flash that was matched for this MCTrack (if any)
