@@ -20,7 +20,7 @@
 
 //#include "DataFormat/wrapper.h"
 //#include "lardataobj/MCBase/MCShower.h"
-
+//#include "lardataobj/MCBase/MCTrack.h"
 #include "OpT0Finder/Base/OpT0FinderTypes.h"
 #include "OpT0Finder/Base/BaseAlgorithm.h"
 #include "OpT0Finder/Algorithms/LightPath.h"
@@ -45,7 +45,8 @@ namespace flashana {
 
     void Construct( const larlite::event_mctrack&,
                     const larlite::event_mcshower&);
-//                    const larlite::wrapper<std::vector<sim::MCShower> >& );
+//  void Construct( const larlite::wrapper<std::vector<sim::MCTrack> >&,
+//                  const larlite::wrapper<std::vector<sim::MCShower> >& );
 
     const std::vector<flashana::QCluster_t>& QClusters() const;
 
@@ -70,7 +71,9 @@ namespace flashana {
     flashana::MCSource_t Identify( const unsigned int,
 				   const larlite::event_mctrack&,
                                    const larlite::event_mcshower&) const;
+//                                 const larlite::wrapper<std::vector<sim::MCTrack> >&,
 //				   const larlite::wrapper<std::vector<sim::MCShower> >& ) const;
+
 
     mutable int _n;
     

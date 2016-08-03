@@ -31,6 +31,7 @@
 #include "lardataobj/RecoBase/OpHit.h"
 #include "lardataobj/AnalysisBase/Calorimetry.h"
 #include "lardataobj/RecoBase/Track.h"
+#include "lardataobj/MCBase/MCTrack.h"
 #include "DataFormat/wrapper.h"
 */
 #include "larcoreobj/GeoAlgo/GeoAlgo.h"

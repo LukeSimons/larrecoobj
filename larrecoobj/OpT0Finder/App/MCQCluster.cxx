@@ -35,16 +35,23 @@ namespace flashana {
   MCSource_t MCQCluster::Identify( const unsigned int ancestor_track_id,
                                    const ::larlite::event_mctrack& ev_mct,
                                    const ::larlite::event_mcshower&  ev_mcs) const
-//                                   const ::larlite::wrapper<std::vector<sim::MCShower> >& ev_mcs) const
+//                                 const ::larlite::wrapper<std::vector<sim::MCTrack> >& ev_mct,
+//                                 const ::larlite::wrapper<std::vector<sim::MCShower> >& ev_mcs) const
+
   {
     MCSource_t res;
 
+//    auto temp_mct = ev_mct.product();
+
     for (size_t mct_index = 0; mct_index < ev_mct.size(); ++mct_index) {
 
+//      auto const & mct = temp_mct[mct_index]; 
       auto const& mct = ev_mct[mct_index];
 
+//      if (mct[mct_index].TrackID() == ancestor_track_id) {
       if (mct.TrackID() == ancestor_track_id) {
         res.index_id = (int)mct_index;
+//        res.g4_time  = mct[mct_index].Start().T();
         res.g4_time  = mct.Start().T();
 
         //std::cout<<"1) g4 time is: "<<res.g4_time / 1000<<" size : "<<mct.size()<<std::endl ;
@@ -59,6 +66,11 @@ namespace flashana {
 //      auto const temp = ev_mcs.product();
 //      auto const& mcs = temp[mcs_index];
       auto const & mcs = ev_mcs[mcs_index];
+//    auto const temp_mcs = ev_mcs.product();
+
+//    for (size_t mcs_index = 0; mcs_index < temp_mcs->size(); ++mcs_index) {
+
+//      auto const& mcs = temp_mcs[mcs_index];
 
       if (mcs.TrackID() == ancestor_track_id) {
         res.index_id = (int)mcs_index;
@@ -75,7 +87,8 @@ namespace flashana {
 
   void MCQCluster::Construct( const ::larlite::event_mctrack& ev_mct,
                               const ::larlite::event_mcshower& ev_mcs )
-//                              const ::larlite::wrapper<std::vector<sim::MCShower> >& ev_mcs )
+//void MCQCluster::Construct( const ::larlite::wrapper<std::vector<sim::MCTrack> >& ev_mct,
+//                            const ::larlite::wrapper<std::vector<sim::MCShower> >& ev_mcs )
   {
 
     //
@@ -102,15 +115,24 @@ namespace flashana {
 
     //
     // 1) Loop over mctrack
-    //
     // Reserve vector size for MCTrack
+//    _mctrack_2_qcluster.reserve(ev_mct->size());
+//    _qcluster_v.reserve(ev_mct->size());
     _mctrack_2_qcluster.reserve(ev_mct.size());
     _qcluster_v.reserve(ev_mct.size());
+
+//    auto temp_mct = ev_mct.product() ;
+
+//    for (size_t mct_index = 0; mct_index < temp_mct->size(); mct_index++) {
     for (size_t mct_index = 0; mct_index < ev_mct.size(); mct_index++) {
+   
       //  std::cout<<"Ancestors: "<<ev_mct.at(mct_index).AncestorTrackID()<<std::endl;
 
-      auto const& trk = ev_mct[mct_index];
-      if (trk.size() <= 2 || trk[0].T() < -2050000 || trk[0].T() > 2750000 ) continue;
+//      auto const & trk = temp_mct[mct_index]; 
+      auto const & trk = ev_mct[mct_index];
+      /// NOTE : I'm not sure why this indexing works. Why is trk still vector<sim::MCTrack>?
+      /// May need to revisit when have files available --ahack 080316
+      if (trk.size() <= 2 || trk.at(0).T() < -2050000 || trk.at(0).T() > 2750000 ) continue;
 
       auto usedIDs_iter = usedIDs.find(trk.AncestorTrackID());
 
