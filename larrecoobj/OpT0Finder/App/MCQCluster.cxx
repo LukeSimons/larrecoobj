@@ -3,16 +3,15 @@
 
 #include "MCQCluster.h"
 
-//#include "LArUtil/LArProperties.h"
-#include "lardata/DetectorInfo/DetectorPropertiesStandard.h"
+#include "LArUtil/LArProperties.h"
+//#include "lardata/DetectorInfo/DetectorPropertiesStandard.h"
 
 #include "DataFormat/mctrack.h"
-
-//#include "DataFormat/mcshower.h"
-#include "lardataobj/MCBase/MCShower.h"
+#include "DataFormat/mcshower.h"
+//#include "lardataobj/MCBase/MCShower.h"
 
 #include "OpT0Finder/Base/OpT0FinderTypes.h"
-#include "GeoAlgo/GeoVector.h"
+#include "larcoreobj/GeoAlgo/GeoVector.h"
 
 namespace flashana {
 
@@ -35,7 +34,8 @@ namespace flashana {
 
   MCSource_t MCQCluster::Identify( const unsigned int ancestor_track_id,
                                    const ::larlite::event_mctrack& ev_mct,
-                                   const ::larlite::wrapper<std::vector<sim::MCShower> >& ev_mcs) const
+                                   const ::larlite::event_mcshower&  ev_mcs) const
+//                                   const ::larlite::wrapper<std::vector<sim::MCShower> >& ev_mcs) const
   {
     MCSource_t res;
 
@@ -54,15 +54,15 @@ namespace flashana {
 
     }
 
-    for (size_t mcs_index = 0; mcs_index < ev_mcs->size(); ++mcs_index) {
+    for (size_t mcs_index = 0; mcs_index < ev_mcs.size(); ++mcs_index) {
 
-      auto const temp = ev_mcs.product();
-      auto const& mcs = temp[mcs_index];
-      // auto const & mcs = ev_mcs[mcs_index];
+//      auto const temp = ev_mcs.product();
+//      auto const& mcs = temp[mcs_index];
+      auto const & mcs = ev_mcs[mcs_index];
 
-      if (mcs[mcs_index].TrackID() == ancestor_track_id) {
+      if (mcs.TrackID() == ancestor_track_id) {
         res.index_id = (int)mcs_index;
-        res.g4_time  = mcs[mcs_index].Start().T();
+        res.g4_time  = mcs.Start().T();
         res.source_type = kMCShowerAncestor;
         return res;
       }
@@ -74,7 +74,8 @@ namespace flashana {
   }
 
   void MCQCluster::Construct( const ::larlite::event_mctrack& ev_mct,
-                              const ::larlite::wrapper<std::vector<sim::MCShower> >& ev_mcs )
+                              const ::larlite::event_mcshower& ev_mcs )
+//                              const ::larlite::wrapper<std::vector<sim::MCShower> >& ev_mcs )
   {
 
     //
@@ -141,7 +142,7 @@ namespace flashana {
       // in the TPC, not the truth x-position
       // Some constants needed
 //      double det_drift_velocity = ::larutil::LArProperties::GetME()->DriftVelocity(); ///< cm/us
-//      double det_drift_velocity = detinfo::DetectorPropertiesStandard().DriftVelocity();
+//      double det_drift_velocity = detinfo::DetectorPropertiesStandard().DriftVelocity(); ///< ???Units
       double det_drift_velocity = 0.111436; // TEMPORARY HACK
       double event_time = trk[0].T(); // ns
       double shift_x = event_time * det_drift_velocity * pow(10, -3); //cm

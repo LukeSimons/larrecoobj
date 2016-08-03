@@ -20,8 +20,8 @@ OSNAME          = $(shell uname -s)
 HOST            = $(shell uname -n)
 OSNAMEMODE      = $(OSNAME)
 
-LDFLAGS += $(shell basictool-config --libs) # -L/home/lsimons/scratch/LArLite_LArSoft_Int/larlite/lib -lBasicTool_LArPyBackend -lBasicTool_EMShowerTools -lBasicTool_GeoAlgo -lBasicTool_FhiclLite -BasicTool_TreeGraph
-#LDFLAGS += -L$(LARLITE_LIBDIR) -lBasicTool_LArPyBackend -lBasicTool_EMShowerTools -llarcoreobj_GeoAlgo -lBasicTool_FhiclLite -BasicTool_TreeGraph # THIS NEEDS TO BE CHANGED TO $(LARCOREOBJ_LIB) ONCE ENVIRONMENT VARIABLE IS CORRECTLY SET
+#LDFLAGS += $(shell basictool-config --libs) # -L/home/lsimons/scratch/LArLite_LArSoft_Int/larlite/lib -lBasicTool_LArPyBackend -lBasicTool_EMShowerTools -lBasicTool_GeoAlgo -lBasicTool_FhiclLite -BasicTool_TreeGraph
+LDFLAGS += -L$(LARLITE_LIBDIR) -lBasicTool_LArPyBackend -lBasicTool_EMShowerTools -llarcoreobj_GeoAlgo -lBasicTool_FhiclLite -BasicTool_TreeGraph # THIS NEEDS TO BE CHANGED TO $(LARCOREOBJ_LIB) ONCE ENVIRONMENT VARIABLE IS CORRECTLY SET
 
 # call kernel specific compiler setup
 include $(LARLITE_BASEDIR)/Makefile/Makefile.${OSNAME}

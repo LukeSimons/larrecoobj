@@ -20,13 +20,21 @@
 #include "OpT0Finder/Algorithms/LightPath.h"
 #include <TTree.h>
 #include <TH2D.h>
+
 #include "DataFormat/track.h"
 #include "DataFormat/opflash.h"
 #include "DataFormat/ophit.h"
 #include "DataFormat/calorimetry.h"
 #include "DataFormat/mctrack.h"
-#include "GeoAlgo/GeoAlgo.h"
-#include "GeoAlgo/GeoLineSegment.h"
+/*
+#include "lardataobj/RecoBase/OpFlash.h"
+#include "lardataobj/RecoBase/OpHit.h"
+#include "lardataobj/AnalysisBase/Calorimetry.h"
+#include "lardataobj/RecoBase/Track.h"
+#include "DataFormat/wrapper.h"
+*/
+#include "larcoreobj/GeoAlgo/GeoAlgo.h"
+#include "larcoreobj/GeoAlgo/GeoLineSegment.h"
 #include "LArUtil/Geometry.h"
 
 

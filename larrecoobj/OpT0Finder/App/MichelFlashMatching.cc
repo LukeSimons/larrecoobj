@@ -4,12 +4,18 @@
 #include "MichelFlashMatching.h"
 
 #include "DataFormat/track.h"
+#include "DataFormat/pfpart.h"
 #include "DataFormat/opflash.h"
 #include "DataFormat/calorimetry.h"
-#include "DataFormat/pfpart.h"
 
-#include "GeoAlgo/GeoAlgo.h"
-#include "GeoAlgo/GeoLineSegment.h"
+//#include "lardataobj/RecoBase/OpFlash.h"
+//#include "lardataobj/AnalysisBase/Calorimetry.h"
+//#include "lardataobj/RecoBase/PFParticle.h"
+//#include "lardataobj/RecoBase/Track.h"
+//#include "DataFormat/wrapper.h"
+
+#include "larcoreobj/GeoAlgo/GeoAlgo.h"
+#include "larcoreobj/GeoAlgo/GeoLineSegment.h"
 #include "LArUtil/Geometry.h"
 #include "OpT0Finder/Base/OpT0FinderTypes.h"
 
@@ -53,7 +59,9 @@ namespace larlite {
 
     const ::larutil::Geometry* g = ::larutil::Geometry::GetME();
 
-    auto ev_opflash = storage->get_data<event_opflash>( _opflash_producer  );
+//    auto ev_opflash = storage->get_data<wrapper < std::vector<recob::OpFlash>>>( _opflash_producer  );
+//    auto ev_pfpart  = storage->get_data<wrapper < std::vector<recob::PFParticle>>> ( _pfpart_producer   );
+    auto ev_opflash = storage->get_data<event_opflash> ( _opflash_producer   );
     auto ev_pfpart  = storage->get_data<event_pfpart> ( _pfpart_producer   );
     event_track* ev_track = nullptr;
     auto const& track_ass_v = storage->find_one_ass(ev_pfpart->id(), ev_track, "michelkTrackinput");

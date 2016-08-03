@@ -80,9 +80,11 @@ namespace larlite {
     _mgr.Reset();
     const ::larutil::Geometry* g = ::larutil::Geometry::GetME();
 
-    auto ev_flash = storage->get_data<event_opflash>("satOpFlash");// opflash");
-    auto ev_hit= storage->get_data<event_ophit>("satOpFlash");// opflash");
+//    auto ev_flash = storage->get_data<wrapper < std::vector<recob::OpFlash>>>("satOpFlash")->product();// opflash");    
+//    auto ev_hit = storage->get_data<wrapper < std::vector<recob::OpHit>>>("satOpFlash")->product();// opflash");
     
+    auto ev_flash = storage->get_data<event_opflash>("satOpFlash");
+    auto ev_hit = storage->get_data<event_hit>("satOpFlash");
     auto ev_track = storage->get_data<event_track>("trackkalmanhit");
     auto ev_mctrack = storage->get_data<event_mctrack>("mcreco");
     
@@ -96,7 +98,7 @@ namespace larlite {
     // Number interactions per event > y MeV
     int n_flash = 0;
     int n_int = 0;
-    
+    _mc_dx = 0; 
     ::flashana::LightPath LP;
     
     for ( auto & f : *ev_flash) {

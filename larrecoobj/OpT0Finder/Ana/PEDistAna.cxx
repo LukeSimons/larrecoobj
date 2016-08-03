@@ -3,12 +3,23 @@
 
 #include "PEDistAna.h"
 #include "LArUtil/Geometry.h"
+#include "LArUtil/TimeService.h"
+
 #include "DataFormat/opdetwaveform.h"
 #include "DataFormat/ophit.h"
 #include "DataFormat/opflash.h"
-#include "DataFormat/trigger.h"
 #include "DataFormat/simphotons.h"
-#include "LArUtil/TimeService.h"
+#include "DataFormat/trigger.h"
+
+/*
+#include "lardataobj/RecoBase/OpFlash.h"
+#include "lardataobj/RecoBase/OpHit.h"
+#include "lardataobj/AnalysisBase/Calorimetry.h"
+#include "larsimobj/Simulation/SimPhotons.h"
+#include "lardataobj/RawData/TriggerData.h"
+#include "DataFormat/wrapper.h"
+*/
+
 namespace larlite {
 
   PEDistAna::PEDistAna()
@@ -112,6 +123,7 @@ namespace larlite {
     // Analyze G4 photons
     //
     if(!_g4_producer.empty()) {
+//      auto ev_simph = storage->get_data<wrapper<std::vector<sim::SimPhotons>>>(_g4_producer);
       auto ev_simph = storage->get_data<event_simphotons>(_g4_producer);
       
       if(!ev_simph || ev_simph->empty() )
@@ -150,7 +162,9 @@ namespace larlite {
       // Get OpDetWaveform & trigger
       auto ev_opdigit = storage->get_data<event_opdetwaveform>(_opdigit_producer);
       auto trig_ptr = storage->get_data<trigger>(_trigger_producer);
-      
+//      auto ev_opdigit = storage->get_data<wrapper<std::vector<raw::OpDetWaveform>>>(_opdigit_producer)->product();      
+//      auto trig_ptr = storage->get_data<wrapper<std::vector<raw::TriggerData>>>(_trigger_producer)->product();
+
       // Skip if not found
       if( !ev_opdigit || ev_opdigit->empty() )
 
@@ -212,6 +226,7 @@ namespace larlite {
 
       // Get OpHit
       auto ev_ophit = storage->get_data<event_ophit>(_ophit_producer);
+//      auto ev_ophit = storage->get_data<wrapper<std::vector<recob::OpHit>>>(_ophit_producer)->product();
 
       // Skip if not found
       if(!ev_ophit || ev_ophit->empty())
@@ -252,6 +267,7 @@ namespace larlite {
 	  
       // Get OpFlash
       auto ev_opflash = storage->get_data<event_opflash>(_opflash_producer);
+//      auto ev_opflash = storage->get_data<wrapper<std::vector<recob::OpFlash>>>(_opflash_producer)->product();
 
       // Skip if not found
       if(!ev_opflash || ev_opflash->empty())

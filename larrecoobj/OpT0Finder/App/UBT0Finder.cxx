@@ -3,12 +3,19 @@
 
 #include "UBT0Finder.h"
 #include "DataFormat/track.h"
+
 #include "DataFormat/opflash.h"
 #include "DataFormat/ophit.h"
 #include "DataFormat/calorimetry.h"
+/*
+#include "lardataobj/RecoBase/OpFlash.h"
+#include "lardataobj/RecoBase/OpHit.h"
+#include "lardataobj/AnalysisBase/Calorimetry.h"
+#include "DataFormat/wrapper.h"
+*/
 #include "DataFormat/mctrack.h"
-#include "GeoAlgo/GeoAlgo.h"
-#include "GeoAlgo/GeoLineSegment.h"
+#include "larcoreobj/GeoAlgo/GeoAlgo.h"
+#include "larcoreobj/GeoAlgo/GeoLineSegment.h"
 #include "LArUtil/Geometry.h"
 #include "OpT0Finder/Base/OpT0FinderTypes.h"
 namespace larlite {
@@ -104,8 +111,12 @@ namespace larlite {
 
     const ::larutil::Geometry* g = ::larutil::Geometry::GetME();
 
-    auto ev_flash = storage->get_data<event_opflash>("opflash");// opflash");
-    auto ev_hit = storage->get_data<event_ophit>    ("ophit"); // opflash");
+//    std::vector<recob::OpFlash>* ev_flash = storage->get_data<wrapper < std::vector<recob::OpFlash>>>("opflash")->product();// opflash");
+//    std::vector<recob::OpHit>* ev_hit = storage->get_data<wrapper < std::vector<recob::OpHit>>>    ("ophit")->product(); // opflash");
+    auto ev_flash = storage->get_data<event_opflash>("opflash");
+    auto ev_hit = storage->get_data<event_ophit>("ophit");
+//    if (ev_flash->empty()) std::cout <<"\nev_falsh is empty";
+//    if (!ev_flash) std::cout <<"\nev_falsh is not valid";
 
     if (!ev_flash || ev_flash->empty()) {
       std::cout << "No opflash found. Skipping event: " << storage->event_id() << std::endl;
@@ -115,7 +126,6 @@ namespace larlite {
       std::cout << "No ophit found. Skipping event: " << storage->event_id() << std::endl;
       return false;
     }
-
 
     // For TH2D-- number of flash per event > x PE
     // Number interactions per event > y MeV
@@ -132,16 +142,19 @@ namespace larlite {
       _flash_tree->Fill();
     }
 
-    //auto ev_track = storage->get_data<event_track>("pandoraCosmicKHit");
+//    auto ev_track = storage->get_data<event_track>("pandoraCosmicKHit");
     auto ev_track = storage->get_data<event_track>("trackkalmanhit");
     auto ev_mctrack = storage->get_data<event_mctrack>("mcreco");
-    auto ev_mcshower = storage->get_data<larlite::wrapper<std::vector<sim::MCShower> > >("mcreco");
+    auto ev_mcshower = storage->get_data<event_mcshower>("mcreco");
+//    auto ev_track = storage->get_data<larlite::wrapper<std::vector<reob::Track>>>("trackkalmanhit");
+//    auto ev_mctrack = storage->get_data<larlite::wrapper<std::vector<sim::MCTrack>>>("mcreco");
+//    auto ev_mcshower = storage->get_data<larlite::wrapper<std::vector<sim::MCShower> > >("mcreco");
 
 
     if (!_use_mc) {
       if (!ev_track || ev_track->empty()) return false;
       for (size_t n = 0; n < ev_track->size(); n++) {
-        std::vector<int> ids ;
+        std::vector<int> ids;
 
         auto const& trk = ev_track->at(n);
 
@@ -196,13 +209,11 @@ namespace larlite {
           _trk_shift = shift_x;
           _trk_min_x = 1036.;
           _trk_max_x = -1036.;
-          ::geoalgo::Trajectory mctraj;
           for (size_t i = 0; i < trk.size(); ++i) {
             if (trk[i].X() > _trk_max_x) { _trk_max_x = trk[i].X(); }
             if (trk[i].X() < _trk_min_x) { _trk_min_x = trk[i].X(); }
 
           }
-
           _track_tree->Fill();
         } // If > 2 points
       } // track loop
@@ -346,6 +357,7 @@ namespace larlite {
         //  if (step1.X() > max_x) max_x = step1.X();
         //}
         //_mc_dx = max_x - min_x;
+        _mc_dx = 0;
 //        if ( mct[0].E() - mct[mct.size() - 1].E() > _e_diff )
        
 
