@@ -15,9 +15,11 @@ INCFLAGS  = -I.                       #Include itself
 INCFLAGS += $(shell larlite-config --includes)
 INCFLAGS += $(shell basictool-config --includes)
 INCFLAGS += -I$(LARLITE_USERDEVDIR)/SelectionTool
+INCFLAGS += -I$(LARLITE_USERDEVDIR)/larcoreobj # TEMPORARY FIX
 
 LDFLAGS += $(shell larlite-config --libs)
-LDFLAGS += $(shell basictool-config --libs) 
+#LDFLAGS += $(shell basictool-config --libs) 
+LDFLAGS += -L$(LARLITE_LIBDIR) -lBasicTool_LArPyBackend -lBasicTool_EMShowerTools -llarcoreobj_GeoAlgo -lBasicTool_FhiclLite -BasicTool_TreeGraph # THIS NEEDS TO BE CHANGED TO $(LARCOREOBJ_LIB) ONCE ENVIRONMENT VARIABLE IS CORRECTLY SET
 LDFLAGS += -L$(LARLITE_LIBDIR) -lSelectionTool_OpT0FinderBase
 LDFLAGS += -L$(LARLITE_LIBDIR) -llarrecoobj_OpT0PhotonLibrary
 LDFLAGS += -L$(shell root-config --libdir) -lMinuit #-lMinuit2

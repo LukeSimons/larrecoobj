@@ -18,7 +18,7 @@
 #include "OpT0Finder/PhotonLibrary/PhotonVisibilityService.h"
 #include "OpT0Finder/Base/OpT0FinderTypes.h"
 #include <numeric>
-#include "GeoAlgo/GeoAlgo.h"
+#include "larcoreobj/GeoAlgo/GeoAlgo.h"
 #include "LArUtil/Geometry.h"
 #include <functional>
 #include <algorithm>

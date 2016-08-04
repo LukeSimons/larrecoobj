@@ -17,6 +17,7 @@ INCFLAGS += $(shell basictool-config --includes)
 INCFLAGS += $(shell seltool-config --includes)
 INCFLAGS += -I$(LARDATAOBJ_INC)
 INCFLAGS += -I$(NUSIMDATA_INC)
+INCFLAGS += -I$(LARLITE_USERDEVDIR)/larcoreobj # TEMPORARY FIX
 
 INCFLAGS += -I$(LARDATA_INC) #lardata/DetectorInfo/LArProperties.h
 INCFLAGS += -I$(LARCORE_INC) #larcore/Geometry/GeometryCore.h 
@@ -37,10 +38,12 @@ include $(LARLITE_BASEDIR)/Makefile/Makefile.${OSNAME}
 
 # call the common GNUmakefile
 LDFLAGS += $(shell larlite-config --libs)
-LDFLAGS += $(shell basictool-config --libs)
+#LDFLAGS += $(shell basictool-config --libs)
+LDFLAGS += -L$(LARLITE_LIBDIR) -lBasicTool_LArPyBackend -lBasicTool_EMShowerTools -llarcoreobj_GeoAlgo -lBasicTool_FhiclLite -BasicTool_TreeGraph # THIS NEEDS TO BE CHANGED TO $(LARCOREOBJ_LIB) ONCE ENVIRONMENT VARIABLE IS CORRECTLY SET
 LDFLAGS += -L$(LARLITE_LIBDIR) -lSelectionTool_OpT0FinderBase
 LDFLAGS += -L$(LARLITE_LIBDIR) -llarrecoobj_OpT0PhotonLibrary
 LDFLAGS += -L$(LARLITE_LIBDIR) -lSelectionTool_OpT0FinderAlgorithms
+LDFLAGS += -L$(LARLITE_LIBDIR) -llarcoreobj_GeoAlgo
 LDFLAGS += -L$(LARDATAOBJ_LIB)
 
 LDFLAGS += -L$(LARDATA_LIB) -llardata_DetectorInfoServices_LArPropertiesServiceStandard_service # lardata/DetectorInfo/LArProperties.h
@@ -51,7 +54,7 @@ LDFLAGS += -L$(FHICLCPP_LIB) # fhiclcpp/ParameterSet.h
 LDFLAGS += -L$(CLHEP_LIB) # CLHEP/Geometry/Transform3D.h
 LDFLAGS += -L$(ART_LIB) # art/Framework/Services/Registry/ServiceHandle.h
 LDFLAGS += -L$(CANVAS_LIB) # canvas/Utilities/TypeID.h
-LDFLAGS += -L$(BOOST_LIB) -lboost_system -lboost_thread-mt -lboost_system-mt -lboost_program_options-mt
+LDFLAGS += -L$(BOOST_LIB) -lboost_system -lboost_thread-mt -lboost_system-mt -lboost_program_options-mt # not necessary, removes error message.
 
 include $(LARLITE_BASEDIR)/Makefile/GNUmakefile.CORE
 
