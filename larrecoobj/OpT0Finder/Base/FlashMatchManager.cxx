@@ -6,7 +6,7 @@
 #include <set>
 #include "FlashMatchManager.h"
 #include "OpT0FinderException.h"
-//#include "FhiclLite/ConfigManager.h"
+#include "FhiclLite/ConfigManager.h"
 namespace flashana {
 
   FlashMatchManager::FlashMatchManager(const std::string name)
@@ -77,7 +77,6 @@ namespace flashana {
 
     Print(msg::kINFO, __FUNCTION__, Form("Configuring with configuration file: %s",cfg_file.c_str()));
 
-/*
     ::fcllite::ConfigManager cfg_mgr("FlashMatchManager");
 
     cfg_mgr.AddCfgFile(_config_file);
@@ -157,7 +156,7 @@ namespace flashana {
     }
 
     _configured = true;
-*/
+
   }
 
   BaseAlgorithm* FlashMatchManager::GetAlgo(flashana::Algorithm_t type)

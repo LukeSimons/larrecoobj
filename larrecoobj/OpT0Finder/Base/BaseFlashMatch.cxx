@@ -12,7 +12,7 @@ namespace flashana {
 
   void BaseFlashMatch::FillEstimate(const QCluster_t& tpc, Flash_t& opdet) const
   {
- //   _flash_hypothesis->FillEstimate(tpc,opdet); WHY IS THIS HERE? I COMMENTED IT OUT?
+    _flash_hypothesis->FillEstimate(tpc,opdet);
   }
 
   void BaseFlashMatch::SetFlashHypothesis(flashana::BaseFlashHypothesis* alg)
