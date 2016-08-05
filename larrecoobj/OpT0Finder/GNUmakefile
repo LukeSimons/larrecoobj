@@ -3,8 +3,8 @@
 #
 
 #SUBDIRS := Base Filter Algo App
-SUBDIRS := Base PhotonLibrary Algorithms App Ana
-
+SUBDIRS := Base Algorithms App Ana
+# PhotonLibrary 
 .phony: all clean
 
 all:
