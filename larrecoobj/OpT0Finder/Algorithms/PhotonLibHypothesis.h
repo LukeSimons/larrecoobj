@@ -16,7 +16,7 @@
 #define PHOTONLIBHYPOTHESIS_H
 
 #include <iostream>
-#include "OpT0Finder/Base/BaseFlashHypothesis.h"
+#include "larrecoobj/OpT0Finder/Base/BaseFlashHypothesis.h"
 
 namespace flashana {
   /**

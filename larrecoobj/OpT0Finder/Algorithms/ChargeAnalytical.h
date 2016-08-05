@@ -14,7 +14,7 @@
 #ifndef CHARGEANALYTICAL_H
 #define CHARGEANALYTICAL_H
 
-#include "OpT0Finder/Base/BaseFlashMatch.h"
+#include "larrecoobj/OpT0Finder/Base/BaseFlashMatch.h"
 //#include "fhiclcpp/ParameterSet.h"
 
 #include <iostream>

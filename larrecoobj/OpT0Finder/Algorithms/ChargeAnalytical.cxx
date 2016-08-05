@@ -2,7 +2,7 @@
 #define CHARGEANALYTICAL_CXX
 
 #include "ChargeAnalytical.h"
-#include "OpT0Finder/Base/OpT0FinderException.h"
+#include "larrecoobj/OpT0Finder/Base/OpT0FinderException.h"
 
 #endif
 

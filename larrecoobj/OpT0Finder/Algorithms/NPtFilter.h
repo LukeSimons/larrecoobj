@@ -14,7 +14,7 @@
 #ifndef OPT0FINDER_NPTFILTER_H
 #define OPT0FINDER_NPTFILTER_H
 
-#include "OpT0Finder/Base/BaseTPCFilter.h"
+#include "larrecoobj/OpT0Finder/Base/BaseTPCFilter.h"
 namespace flashana {
   /**
      \class NPtFilter

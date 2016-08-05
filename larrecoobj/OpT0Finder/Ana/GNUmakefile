@@ -3,8 +3,8 @@
 #
 
 # specific names for this package
-DICT  = SelectionTool_OpT0FinderAnaDict
-SHLIB = libSelectionTool_OpT0FinderAna.so
+DICT  = larrecoobj_OpT0FinderAnaDict
+SHLIB = liblarrecoobj_OpT0FinderAna.so
 SOURCES = $(filter-out $(DICT).cxx, $(wildcard *.cxx))
 FMWK_HEADERS = LinkDef.h $(DICT).h
 HEADERS = $(filter-out $(FMWK_HEADERS), $(wildcard *.h))
@@ -26,7 +26,7 @@ include $(LARLITE_BASEDIR)/Makefile/Makefile.${OSNAME}
 
 # call the common GNUmakefile
 LDFLAGS += $(shell larlite-config --libs)
-LDFLAGS += -L$(LARLITE_LIBDIR) -lSelectionTool_OpT0FinderBase -lSelectionTool_OpT0FinderAlgorithms
+LDFLAGS += -L$(LARLITE_LIBDIR) -llarrecoobj_OpT0FinderBase -llarrecoobj_OpT0FinderAlgorithms
 LDFLAGS += -L$(LARDATAOBJ_LIB) # OpFlash.h, OpHit.h & OpDetWaveform.h 
 LDFLAGS += -L$(LARLITE_LIBDIR) -llarcoreobj_GeoAlgo #Temporary fix
 

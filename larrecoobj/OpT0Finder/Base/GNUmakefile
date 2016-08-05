@@ -3,8 +3,8 @@
 #
 
 # specific names for this package
-DICT  = SelectionTool_OpT0FinderBaseDict
-SHLIB = libSelectionTool_OpT0FinderBase.so
+DICT  = larrecoobj_OpT0FinderBaseDict
+SHLIB = liblarrecoobj_OpT0FinderBase.so
 SOURCES = $(filter-out $(DICT).cxx, $(wildcard *.cxx))
 FMWK_HEADERS = LinkDef.h $(DICT).h classes.h
 HEADERS = $(filter-out $(FMWK_HEADERS), $(wildcard *.h))
@@ -20,11 +20,11 @@ OSNAME          = $(shell uname -s)
 HOST            = $(shell uname -n)
 OSNAMEMODE      = $(OSNAME)
 
-#LDFLAGS += $(shell basictool-config --libs) # -L/home/lsimons/scratch/LArLite_LArSoft_Int/larlite/lib -lBasicTool_LArPyBackend -lBasicTool_EMShowerTools -lBasicTool_GeoAlgo -lBasicTool_FhiclLite -BasicTool_TreeGraph
-LDFLAGS += -L$(LARLITE_LIBDIR) -lBasicTool_LArPyBackend -lBasicTool_EMShowerTools -llarcoreobj_GeoAlgo -lBasicTool_FhiclLite -BasicTool_TreeGraph # THIS NEEDS TO BE CHANGED TO $(LARCOREOBJ_LIB) ONCE ENVIRONMENT VARIABLE IS CORRECTLY SET
-
 # call kernel specific compiler setup
 include $(LARLITE_BASEDIR)/Makefile/Makefile.${OSNAME}
+
+#LDFLAGS += $(shell basictool-config --libs) # -L/home/lsimons/scratch/LArLite_LArSoft_Int/larlite/lib -lBasicTool_LArPyBackend -lBasicTool_EMShowerTools -lBasicTool_GeoAlgo -lBasicTool_FhiclLite -BasicTool_TreeGraph
+LDFLAGS += -L$(LARLITE_LIBDIR) -lBasicTool_LArPyBackend -lBasicTool_EMShowerTools -llarcoreobj_GeoAlgo -lBasicTool_FhiclLite -BasicTool_TreeGraph # THIS NEEDS TO BE CHANGED TO $(LARCOREOBJ_LIB) ONCE ENVIRONMENT VARIABLE IS CORRECTLY SET
 
 # call the common GNUmakefile
 include $(LARLITE_BASEDIR)/Makefile/GNUmakefile.CORE

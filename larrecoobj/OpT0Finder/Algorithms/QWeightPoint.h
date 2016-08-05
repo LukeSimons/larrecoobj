@@ -14,7 +14,7 @@
 #ifndef OPT0FINDER_QWEIGHTPOINT_H
 #define OPT0FINDER_QWEIGHTPOINT_H
 
-#include "OpT0Finder/Base/BaseFlashMatch.h"
+#include "larrecoobj/OpT0Finder/Base/BaseFlashMatch.h"
 
 namespace flashana {
   

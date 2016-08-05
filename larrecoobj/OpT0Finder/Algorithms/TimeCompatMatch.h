@@ -14,7 +14,7 @@
 #ifndef OPT0FINDER_TIMECOMPATMATCH_H
 #define OPT0FINDER_TIMECOMPATMATCH_H
 
-#include "OpT0Finder/Base/BaseProhibitAlgo.h"
+#include "larrecoobj/OpT0Finder/Base/BaseProhibitAlgo.h"
 
 namespace flashana {
   

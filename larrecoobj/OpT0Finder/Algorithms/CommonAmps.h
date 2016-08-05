@@ -14,7 +14,7 @@
 #ifndef OPT0FINDER_COMMONAMPS_H
 #define OPT0FINDER_COMMONAMPS_H
 
-#include "OpT0Finder/Base/BaseFlashMatch.h"
+#include "larrecoobj/OpT0Finder/Base/BaseFlashMatch.h"
 #include "TH1D.h"
 
 namespace flashana {

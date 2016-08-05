@@ -2,8 +2,8 @@
 #define OPT0FINDER_COMMONAMPS_CXX
 
 #include "CommonAmps.h"
-#include "OpT0Finder/Base/OpT0FinderException.h"
-#include "OpT0Finder/PhotonLibrary/PhotonVisibilityService.h"
+#include "larrecoobj/OpT0Finder/Base/OpT0FinderException.h"
+#include "larrecoobj/OpT0Finder/PhotonLibrary/PhotonVisibilityService.h"
 #include <cmath>
 #include <sstream>
 #include <numeric>

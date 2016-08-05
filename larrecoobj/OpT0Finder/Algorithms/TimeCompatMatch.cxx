@@ -2,7 +2,7 @@
 #define OPT0FINDER_TIMECOMPATMATCH_CXX
 
 #include "TimeCompatMatch.h"
-#include "OpT0Finder/Base/OpT0FinderException.h"
+#include "larrecoobj/OpT0Finder/Base/OpT0FinderException.h"
 #include "LArUtil/GeometryHelper.h"
 #include "LArUtil/DetectorProperties.h"
 #include <cmath>

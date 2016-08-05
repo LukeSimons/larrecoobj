@@ -2,7 +2,7 @@
 #define PHOTONLIBHYPOTHESIS_CXX
 
 #include "PhotonLibHypothesis.h"
-#include "OpT0Finder/PhotonLibrary/PhotonVisibilityService.h"
+#include "larrecoobj/OpT0Finder/PhotonLibrary/PhotonVisibilityService.h"
 
 namespace flashana {
 

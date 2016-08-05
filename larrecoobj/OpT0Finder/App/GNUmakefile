@@ -3,10 +3,10 @@
 #
 
 # specific names for this package
-DICT  = SelectionTool_OpT0FinderApp
-SHLIB = libSelectionTool_OpT0FinderApp.so
+DICT  = larrecoobj_OpT0FinderApp
+SHLIB = liblarrecoobj_OpT0FinderApp.so
 SOURCES = $(filter-out $(DICT).cxx, $(wildcard *.cxx))
-FMWK_HEADERS = LinkDef.h $(DICT).h
+FMWK_HEADERS = LinkDef.h $(DICT).h classes.h
 HEADERS = $(filter-out $(FMWK_HEADERS), $(wildcard *.h))
 OBJECTS = $(SOURCES:.cxx=.o)
 
@@ -40,10 +40,8 @@ include $(LARLITE_BASEDIR)/Makefile/Makefile.${OSNAME}
 LDFLAGS += $(shell larlite-config --libs)
 #LDFLAGS += $(shell basictool-config --libs)
 LDFLAGS += -L$(LARLITE_LIBDIR) -lBasicTool_LArPyBackend -lBasicTool_EMShowerTools -llarcoreobj_GeoAlgo -lBasicTool_FhiclLite -BasicTool_TreeGraph # THIS NEEDS TO BE CHANGED TO $(LARCOREOBJ_LIB) ONCE ENVIRONMENT VARIABLE IS CORRECTLY SET
-LDFLAGS += -L$(LARLITE_LIBDIR) -lSelectionTool_OpT0FinderBase
+LDFLAGS += -L$(LARLITE_LIBDIR) -llarrecoobj_OpT0FinderBase -llarrecoobj_OpT0FinderAlgorithms 
 LDFLAGS += -L$(LARLITE_LIBDIR) -llarliteobj_OpT0PhotonLibrary
-LDFLAGS += -L$(LARLITE_LIBDIR) -lSelectionTool_OpT0FinderAlgorithms
-LDFLAGS += -L$(LARLITE_LIBDIR) -llarcoreobj_GeoAlgo
 LDFLAGS += -L$(LARDATAOBJ_LIB)
 
 LDFLAGS += -L$(LARDATA_LIB) -llardata_DetectorInfoServices_LArPropertiesServiceStandard_service # lardata/DetectorInfo/LArProperties.h

@@ -14,7 +14,7 @@
 #ifndef OPT0FINDER_MAXNPEWINDOW_H
 #define OPT0FINDER_MAXNPEWINDOW_H
 
-#include "OpT0Finder/Base/BaseFlashFilter.h"
+#include "larrecoobj/OpT0Finder/Base/BaseFlashFilter.h"
 
 namespace flashana {
   /**

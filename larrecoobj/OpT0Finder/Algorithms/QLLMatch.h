@@ -15,7 +15,7 @@
 #define QLLMATCH_H
 
 #include <iostream>
-#include "OpT0Finder/Base/BaseFlashMatch.h"
+#include "larrecoobj/OpT0Finder/Base/BaseFlashMatch.h"
 #include <TMinuit.h>
 namespace flashana {
   /**
