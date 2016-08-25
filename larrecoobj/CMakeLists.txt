@@ -1,3 +1,3 @@
 # basic source code CMakeLists.txt
 
-add_subdirectory(LLSelectionTool)
+add_subdirectory(OpT0Finder)
